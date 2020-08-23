@@ -4,7 +4,7 @@ import {Button} from 'antd'
 export default function () {
     return(
         <div>
-            <Button type="primary">test2</Button>  
+            <Button type="primary">menu2 list</Button>  
         </div>
     )
 }

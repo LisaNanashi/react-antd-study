@@ -43,7 +43,7 @@ class App extends React.PureComponent {
                                     style={{
                                         padding: 24,
                                         margin: "10px 10px 10px 0",
-                                        minHeight: "86vh",
+                                        minHeight: "90vh",
                                     }}
                                 >
                                     <SelectedRoute />

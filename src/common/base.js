@@ -1,9 +1,12 @@
-import React ,{ Suspense, lazy } from 'react';
-import { Menu, Layout, Skeleton} from 'antd';
+import React, { Suspense, lazy } from 'react';
+import { Menu, Layout, Skeleton } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { createBrowserHistory } from "history";
 // 菜单
 const routes = require(`../config/routes`);
+const history = createBrowserHistory();
+const GlobalIdentity = history.location.pathname.split("/")[1];
 const { Header } = Layout;
 const { SubMenu } = Menu;
 /*
@@ -40,7 +43,8 @@ export class SelectedRoute extends React.PureComponent {
             if (route.type === "index") {
                 route.title && (document.title = route.title);
                 IndexPage = lazy(async () => {
-                    return import(`../pages${route.component}`);
+                    // return import(`../pages${route.component}`);
+                    return import(`../pages/home/index`);
                 });
             }
             if (route.type === "404") {
@@ -69,7 +73,7 @@ export class SelectedRoute extends React.PureComponent {
                 <Switch>
                     <Route
                         exact
-                        path={`/admin`}
+                        path={`/`}
                         render={(props) => <IndexPage {...props} />}
                     />
                     {$routes.map((route, i) => (
@@ -112,8 +116,17 @@ export class SiderMenuLeft extends React.PureComponent {
     constructor(props) {
         super();
         this.rootSubmenuKeys = []
-        routes.map((c, i) => this.rootSubmenuKeys.push('sub' + i));
-        this.state = { openKeys: ['sub0'] };
+        let openKeys_ = ['sub0']
+        routes.map((c, i) => {
+            this.rootSubmenuKeys.push('sub' + i);
+            // 展开的菜单
+            if (c.folder === GlobalIdentity) {
+                openKeys_ = ['sub' + i]
+            }
+            return c;
+        });
+        this.state = { openKeys: openKeys_ };
+        console.log(this.state.openKeys)
     }
 
     onOpenChange = openKeys => {
@@ -145,6 +158,8 @@ export class SiderMenuLeft extends React.PureComponent {
         return (
             <Menu
                 theme="dark" mode="inline"
+                defaultOpenKeys="[sub0]"
+                defaultSelectedKeys="[sub0_0]"
                 openKeys={this.state.openKeys}
                 onOpenChange={this.onOpenChange}
             >
