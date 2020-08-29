@@ -1,8 +1,7 @@
 import React from "react";
 import { Button, Input, List } from 'antd'
 import store from '../../store'
-import { getItemAction, changeInputAction, addItemAction, deleteItemAction } from "../../store/actionCreator"
-import axios from 'axios'
+import { _getlistAction, changeInputAction, addItemAction, deleteItemAction } from "../../store/actionCreator"
 
 export default class Test extends React.PureComponent {
     constructor(props) {
@@ -16,19 +15,13 @@ export default class Test extends React.PureComponent {
         })
     }
     componentDidMount() {
-        axios.get('https://www.easy-mock.com/mock/5f424d3a37dd743fd5db5dcb/reduxStudy/list')
-            .then((res) => {
-                console.log(res.data.data.list)
-                const action = getItemAction(res.data.data.list)
-                store.dispatch(action)
-            })
-            .catch((error) => {
-                console.log('axios 获取数据失败' + error)
-            })
+        const action = _getlistAction()
+        store.dispatch(action)
     }
-    // shouldComponentUpdate(){
-    //     return false;
-    // }
+    shouldComponentUpdate(nextprops,nextstate){
+        //if(nextprops.)
+        return false;
+    }
     changeVal(e) {
         const action = changeInputAction(e.target.value)
         store.dispatch(action)
